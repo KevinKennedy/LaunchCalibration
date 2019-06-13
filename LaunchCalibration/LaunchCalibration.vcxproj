@@ -337,6 +337,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <PackageCertificateThumbprint>488D920CA69EB012DBB9490DBA14684A782DE5A7</PackageCertificateThumbprint>
   </PropertyGroup>
   <Target Name="EnsureNuGetPackageOrSdkVersion" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

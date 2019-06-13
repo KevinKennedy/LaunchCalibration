@@ -2,18 +2,33 @@
 #include "LaunchCalibrationMain.h"
 #include "Common/DirectXHelper.h"
 
+#include <winrt\windows.system.h>
 #include <windows.graphics.directx.direct3d11.interop.h>
 
 using namespace LaunchCalibration;
 using namespace concurrency;
 using namespace Microsoft::WRL;
 using namespace std::placeholders;
+using namespace winrt::Windows::Foundation;
+using namespace winrt::Windows::System;
 using namespace winrt::Windows::Foundation::Numerics;
 using namespace winrt::Windows::Gaming::Input;
 using namespace winrt::Windows::Graphics::Holographic;
 using namespace winrt::Windows::Graphics::DirectX::Direct3D11;
 using namespace winrt::Windows::Perception::Spatial;
 using namespace winrt::Windows::UI::Input::Spatial;
+
+
+IAsyncAction StartCalibration()
+{
+	Uri calibrationUri = { L"ms-hololenssetup://EyeTracking" };
+	LauncherOptions options = {};
+
+	options.TargetApplicationPackageFamilyName(L"Microsoft.HoloLensSetup_8wekyb3d8bbwe");
+
+	LaunchUriResult results{ co_await Launcher::LaunchUriForResultsAsync(calibrationUri, options) };
+	winrt::Windows::ApplicationModel::Core::CoreApplication::Exit();
+}
 
 // Loads and initializes application assets when the application is loaded.
 LaunchCalibrationMain::LaunchCalibrationMain(std::shared_ptr<DX::DeviceResources> const& deviceResources) :
@@ -185,6 +200,14 @@ HolographicFrame LaunchCalibrationMain::Update()
 #ifdef DRAW_SAMPLE_CONTENT
         m_spinningCubeRenderer->Update(m_timer);
 #endif
+
+		if (!m_calibrationLaunched)
+		{
+			m_calibrationLaunched = true;
+			auto processOp{ StartCalibration() };
+		}
+
+
     });
 
     if (!m_canCommitDirect3D11DepthBuffer)

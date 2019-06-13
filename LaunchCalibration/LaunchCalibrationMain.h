@@ -8,7 +8,7 @@
 //     * Remove the unused code from your app's Main class.
 //     * Delete the Content folder provided with this template.
 //
-#define DRAW_SAMPLE_CONTENT
+// #define DRAW_SAMPLE_CONTENT
 
 #include "Common/DeviceResources.h"
 #include "Common/StepTimer.h"
@@ -92,6 +92,8 @@ namespace LaunchCalibration
 
         // Render loop timer.
         DX::StepTimer                                               m_timer;
+
+		bool                                                        m_calibrationLaunched = false;
 
         // Represents the holographic space around the user.
         winrt::Windows::Graphics::Holographic::HolographicSpace     m_holographicSpace = nullptr;
